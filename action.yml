@@ -1,0 +1,53 @@
+name: "Setup Hare"
+description: "Setup the Hare language"
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Set environment variables"
+      shell: bash
+      run: |
+        echo "TOOLS_TEMP_FOLDER=$HOME/hare-setup" >> $GITHUB_ENV
+  
+    - name: "Create folders"
+      shell: bash
+      run: |
+        mkdir -vp "$TOOLS_TEMP_FOLDER"
+    
+    - name: "Install qbe"
+      shell: bash
+      run: |
+        git clone "git clone git://c9x.me/qbe.git" "$TOOLS_TEMP_FOLDER/qbe"
+        cd "$TOOLS_TEMP_FOLDER/qbe"
+        make
+        sudo make install
+    
+    - name: "Install scdoc"
+      shell: bash
+      run: |
+        git clone "https://git.sr.ht/~sircmpwn/scdoc" "$TOOLS_TEMP_FOLDER/scdoc"
+        cd "$TOOLS_TEMP_FOLDER/scdoc"
+        make
+        sudo make install
+
+    - name: "Install bootstrap compiler"
+      shell: bash
+      run: |
+        git clone "https://git.sr.ht/~sircmpwn/harec" "$TOOLS_TEMP_FOLDER/harec"
+        cd "$TOOLS_TEMP_FOLDER/harec"
+        ./configure
+        make
+        sudo make install
+     
+    - name: "Install the build driver & standard library"
+      shell: bash
+      run: |
+        git clone "https://git.sr.ht/~sircmpwn/hare" "$TOOLS_TEMP_FOLDER/hare"
+        cd "$TOOLS_TEMP_FOLDER/hare"
+        make
+        sudo make install
+        
+    - name: "Clean up"
+      shell: bash
+      run: |
+        rm -rf "$TOOLS_TEMP_FOLDER"
