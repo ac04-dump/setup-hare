@@ -17,8 +17,10 @@ runs:
     - name: "Install qbe"
       shell: bash
       run: |
-        git clone "git clone git://c9x.me/qbe.git" "$TOOLS_TEMP_FOLDER/qbe"
-        cd "$TOOLS_TEMP_FOLDER/qbe"
+        cd "$TOOLS_TEMP_FOLDER"
+        wget "https://c9x.me/git/qbe.git/snapshot/qbe-1.0.tar.gz"
+        tar xf "qbe-1.0.tar.gz"
+        cd "qbe-1.0"
         make
         sudo make install
     
